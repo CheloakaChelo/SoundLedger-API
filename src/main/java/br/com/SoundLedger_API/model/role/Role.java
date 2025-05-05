@@ -3,7 +3,10 @@ package br.com.SoundLedger_API.model.role;
 public enum Role {
 
     ARTISTA("artista"),
-    GRAVADORA("gravadora");
+    COMPOSITOR("compositor"),
+    PRODUTOR("produtor"),
+    GRAVADORA("gravadora"),
+    ADMIN("admin");
 
     private final String role;
 
