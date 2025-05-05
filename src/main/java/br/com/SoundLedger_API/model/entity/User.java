@@ -1,18 +1,19 @@
 package br.com.SoundLedger_API.model.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import br.com.SoundLedger_API.model.role.Role;
+import org.springframework.data.annotation.Id;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Set;
 
 @Document(collection = "user_entity")
 @Data
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private Long id;
 
     private String nome;
@@ -22,4 +23,7 @@ public class User {
 
     private String senha;
 
+    private String enderecoCarteira;
+
+    private Set<Role> roles;
 }
