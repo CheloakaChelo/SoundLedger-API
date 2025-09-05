@@ -1,7 +1,12 @@
 package br.com.SoundLedger_API.model.entity;
 
 
+import br.com.SoundLedger_API.model.entity.perfil.PerfilArtista;
+import br.com.SoundLedger_API.model.entity.perfil.PerfilCompositor;
+import br.com.SoundLedger_API.model.entity.perfil.PerfilGravadora;
+import br.com.SoundLedger_API.model.entity.perfil.PerfilProdutor;
 import br.com.SoundLedger_API.model.role.Role;
+import org.springframework.aop.interceptor.PerformanceMonitorInterceptor;
 import org.springframework.data.annotation.Id;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -14,7 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    private Long id;
+    private String id;
 
     private String nome;
 
@@ -26,4 +31,9 @@ public class User {
     private String enderecoCarteira;
 
     private Set<Role> roles;
+
+    private PerfilArtista perfilArtista;
+    private PerfilCompositor perfilCompositor;
+    private PerfilProdutor perfilProdutor;
+    private PerfilGravadora perfilGravadora;
 }

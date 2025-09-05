@@ -2,7 +2,7 @@ package br.com.SoundLedger_API.controller;
 
 import br.com.SoundLedger_API.model.entity.User;
 import br.com.SoundLedger_API.service.UserService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,11 @@ public class UserController {
         this.service = service;
     }
 
+    @GetMapping
+    public String helloUser(){
+        return "olá";
+    }
+
     @GetMapping("/listar")
     public ResponseEntity<List<User>> listarUser(){
         List<User> userList = service.listarUser();
@@ -34,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/listar/{id}")
-    public ResponseEntity<?> userById(@PathVariable Long id){
+    public ResponseEntity<?> userById(@PathVariable String id){
         Optional<User> userPorId = service.listarUserPorId(id);
 
         if (userPorId.isPresent()){
@@ -56,9 +61,9 @@ public class UserController {
         return ResponseEntity.ok(editUser);
     }
 
-    @DeleteMapping("/deletar")
+    @DeleteMapping("/deletar/{id}")
     @Transactional
-    public ResponseEntity<Optional<User>> deleteUserById(@PathVariable Long id){
+    public ResponseEntity<Optional<User>> deleteUserById(@PathVariable String id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }

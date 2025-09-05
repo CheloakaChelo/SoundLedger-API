@@ -2,6 +2,7 @@ package br.com.SoundLedger_API.service;
 
 import br.com.SoundLedger_API.dao.IUser;
 import br.com.SoundLedger_API.model.entity.User;
+import br.com.SoundLedger_API.model.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -20,11 +22,12 @@ public class UserService {
         return (List<User>) dao.findAll();
     }
 
-    public Optional<User> listarUserPorId(@PathVariable Long id){
+    public Optional<User> listarUserPorId(@PathVariable String id){
         return dao.findById(id);
     }
 
     public User cadastrarUser(@RequestBody User user){
+        tratarPerfisConformeRoles(user);
         return dao.save(user);
     }
 
@@ -33,10 +36,65 @@ public class UserService {
     }
 
 
-    public Optional<User> deleteById(@PathVariable Long id){
+    public Optional<User> deleteById(@PathVariable String id){
         Optional<User> userById = dao.findById(id);
         dao.deleteById(id);
         return userById;
+    }
+
+    private void tratarPerfisConformeRoles (User user){
+        Set<Role> roles = user.getRoles();
+
+        if (roles.contains(Role.ARTISTA)){
+            if (user.getPerfilArtista() == null) {
+                throw new IllegalArgumentException("Perfil do artista deve ser preenchido ao ser cadastrado como ARTISTA");
+            }
+            user.getPerfilArtista().setUserId(user.getId());
+        } else {
+            if (!roles.contains(Role.ARTISTA) && user.getPerfilArtista() != null){
+                throw new IllegalArgumentException("Cadastro ARTISTA não atribuído");
+            }
+            user.setPerfilArtista(null);
+        }
+
+        if (roles.contains(Role.COMPOSITOR)){
+            if (user.getPerfilCompositor() == null) {
+                throw new IllegalArgumentException("Perfil do compositor deve ser preenchido ao ser cadastrado como COMPOSITOR");
+            }
+            user.getPerfilCompositor().setUserId(user.getId());
+        } else {
+            if (!roles.contains(Role.COMPOSITOR) && user.getPerfilCompositor() != null){
+                throw new IllegalArgumentException("Cadastro COMPOSITOR não atribuído");
+            }
+            user.setPerfilCompositor(null);
+        }
+
+        if (roles.contains(Role.PRODUTOR)) {
+            if (user.getPerfilProdutor() == null) {
+                throw new IllegalArgumentException("Perfil do produtor deve ser preenchido ao ser cadastrado como PRODUTOR");
+            }
+            user.getPerfilProdutor().setUserId(user.getId());
+        } else {
+            if (!roles.contains(Role.PRODUTOR) && user.getPerfilProdutor() != null){
+                throw new IllegalArgumentException("Cadastro PRODUTOR não atribuído");
+            }
+            user.setPerfilProdutor(null);
+        }
+
+        if (roles.contains(Role.GRAVADORA)) {
+            if (user.getPerfilGravadora() == null) {
+                throw new IllegalArgumentException("Perfil da gravadora deve ser preenchido ao ser cadastrado como GRAVADORA");
+            }
+            user.getPerfilGravadora().setUserId(user.getId());
+        } else {
+            if (!roles.contains(Role.GRAVADORA) && user.getPerfilGravadora() != null) {
+                throw new IllegalArgumentException("Cadastro GRAVADORA não atribuído");
+            }
+            user.setPerfilGravadora(null);
+        }
+
+
+
     }
 
 }
