@@ -16,8 +16,6 @@ import java.util.List;
 public class PerfilCompositor {
 
     @Id
-    private String id;
-
     private String userId;
 
     private String nomeArtistico;

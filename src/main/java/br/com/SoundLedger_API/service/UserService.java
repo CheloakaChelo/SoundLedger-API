@@ -1,9 +1,15 @@
 package br.com.SoundLedger_API.service;
 
 import br.com.SoundLedger_API.dao.IUser;
+import br.com.SoundLedger_API.model.dto.UserDTO;
 import br.com.SoundLedger_API.model.entity.User;
 import br.com.SoundLedger_API.model.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +24,16 @@ public class UserService {
     @Autowired
     private IUser dao;
 
+    @Autowired
+    private CarteiraService carteiraService;
+
+
+    @Autowired
+    public UserService(IUser dao, CarteiraService carteiraService) {
+        this.dao = dao;
+        this.carteiraService = carteiraService;
+    }
+
     public List<User> listarUser(){
         return (List<User>) dao.findAll();
     }
@@ -26,8 +42,12 @@ public class UserService {
         return dao.findById(id);
     }
 
-    public User cadastrarUser(@RequestBody User user){
-        tratarPerfisConformeRoles(user);
+    public User cadastrarUser(User user) throws Exception {
+        user.setSenha(new BCryptPasswordEncoder().encode(user.getSenha()));
+
+        String enderecoCarteira = carteiraService.gerarEnderecoCarteira();
+        user.setEnderecoCarteira(enderecoCarteira);
+
         return dao.save(user);
     }
 
@@ -92,8 +112,6 @@ public class UserService {
             }
             user.setPerfilGravadora(null);
         }
-
-
 
     }
 

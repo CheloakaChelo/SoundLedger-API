@@ -16,8 +16,6 @@ import java.util.List;
 public class PerfilArtista {
 
     @Id
-    private String id;
-
     private String userId;
 
     private String nomeArtistico;

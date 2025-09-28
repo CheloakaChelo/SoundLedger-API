@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<User> cadastrarUser(@RequestBody User user){
+    public ResponseEntity<User> cadastrarUser(@RequestBody User user) throws Exception{
         User newUser = service.cadastrarUser(user);
         return ResponseEntity.ok(newUser);
     }
