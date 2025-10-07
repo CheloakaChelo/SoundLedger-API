@@ -2,6 +2,7 @@ package br.com.SoundLedger_API.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webservices.client.HttpWebServiceMessageSenderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/musica/listar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/listar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/musica/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/musica/find/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/musica/listar/{id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/musica/deletar/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

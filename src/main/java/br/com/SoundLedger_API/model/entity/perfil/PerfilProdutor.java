@@ -18,6 +18,7 @@ public class PerfilProdutor {
     @Id
     private String userId;
 
+    private String nomeArtístico;
     private String estudio;
 
     private List<Musica> musicasProduzidas;
