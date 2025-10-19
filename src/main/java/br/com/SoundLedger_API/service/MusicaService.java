@@ -37,7 +37,7 @@ public class MusicaService {
     public Musica cadastrarMusica(@RequestBody Musica musica){
         for (ParticipacaoNaMusica p : musica.getParticipacoes()){
             User user = userDao.findById(p.getUsuarioId()).orElseThrow(() -> new RuntimeException("Usuario não encontrado: " + p.getUsuarioId()));
-            p.setArtistaParticipante(user.getNome());
+            p.setNomeArtista(user.getNome());
         }
         return dao.save(musica);
     }
