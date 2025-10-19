@@ -87,6 +87,11 @@
 			<version>4.4.0</version>
 		</dependency>
 		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.web3j</groupId>
 			<artifactId>core</artifactId>
 			<version>4.9.8</version>
