@@ -33,7 +33,7 @@ public class LastFmService {
     private final Duration BLOCK_TIMEOUT = Duration.ofSeconds(10);
 
     public LastFmService(WebClient.Builder webClientBuilder,
-                         @Value("${lastfm.api-key}") String apiKey, View error){
+                         @Value("${lastfm.api-key}") String apiKey){
         this.apiKey = apiKey;
         this.webClient = webClientBuilder.baseUrl("http://ws.audioscrobbler.com").build();
 

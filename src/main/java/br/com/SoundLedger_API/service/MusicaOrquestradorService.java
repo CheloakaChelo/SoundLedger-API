@@ -120,10 +120,18 @@ public class MusicaOrquestradorService {
         BigInteger n = BigInteger.valueOf(numeroDeDetentores);
         BigInteger splitBase = cem.divide(n);
         BigInteger resto = cem.remainder(n);
-        List<BigInteger> splits = java.util.stream.Stream.generate(() -> splitBase)
+
+        List<BigInteger> initialSplits = java.util.stream.Stream.generate(() -> splitBase)
                 .limit(numeroDeDetentores)
-                .collect(Collectors.toUnmodifiableList());
-        splits.set(0, splits.get(0).add(resto));
+                .collect(Collectors.toList());
+
+        List<BigInteger> splits = new ArrayList<>(initialSplits);
+
+
+
+        if (!splits.isEmpty() && resto.compareTo(BigInteger.ZERO) > 0) {
+            splits.set(0, splits.get(0).add(resto));
+        }
         return splits;
     }
 }

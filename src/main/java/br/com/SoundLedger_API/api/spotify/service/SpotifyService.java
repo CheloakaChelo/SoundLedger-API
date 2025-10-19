@@ -27,7 +27,7 @@ public class SpotifyService {
 
     public SpotifyService(WebClient.Builder webClientBuilder,
                           @Value("${spotify.client-id}") String clientId,
-                          @Value("${spotify.client-secret}") String clientSecret){
+                          @Value("${spotify.client-secret}") String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.authWebClient = webClientBuilder.baseUrl("https://accounts.spotify.com").build();
@@ -35,7 +35,7 @@ public class SpotifyService {
     }
 
     private Mono<String> getAccessToken() {
-        if (cachedAccessToken != null && Instant.now().isBefore(tokenExpiryTime)){
+        if (cachedAccessToken != null && Instant.now().isBefore(tokenExpiryTime)) {
             return Mono.just(cachedAccessToken);
         }
 
