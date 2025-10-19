@@ -118,6 +118,32 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.web3j</groupId>
+				<artifactId>web3j-maven-plugin</artifactId>
+				<version>4.10.0</version> <configuration>
+				<packageName>br.com.SoundLedger_API.api.blockchain.contracts</packageName>
+				<outputDirectory>
+					<java>src/main/java</java>
+				</outputDirectory>
+
+
+					<contractName>SoundLedgerContract</contractName>
+					<abiFile>src/main/resources/blockchain/RoyaltyContract.abi</abiFile>
+					<binFile>src/main/resources/blockchain/RoyaltyContract.bin</binFile>
+
+			</configuration>
+				<executions>
+					<execution>
+						<id>generate-contracts</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-sources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
