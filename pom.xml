@@ -124,15 +124,17 @@
 				<artifactId>web3j-maven-plugin</artifactId>
 				<version>4.10.0</version> <configuration>
 				<packageName>br.com.SoundLedger_API.api.blockchain.contracts</packageName>
+
 				<outputDirectory>
 					<java>src/main/java</java>
 				</outputDirectory>
 
-
-					<contractName>SoundLedgerContract</contractName>
-					<abiFile>src/main/resources/blockchain/RoyaltyContract.abi</abiFile>
-					<binFile>src/main/resources/blockchain/RoyaltyContract.bin</binFile>
-
+				<soliditySourceFiles>
+					<directory>src/main/solidity</directory>
+					<includes>
+						<include>**/*.sol</include>
+					</includes>
+				</soliditySourceFiles>
 			</configuration>
 				<executions>
 					<execution>

@@ -8,10 +8,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -55,6 +58,19 @@ public class UserService {
         Optional<User> userById = dao.findById(id);
         dao.deleteById(id);
         return userById;
+    }
+
+    public List<String> findWalletsByNames(List<String> nomes) {
+
+        List<User> users = dao.findAllByNomeIn(nomes);
+
+        if (users.size() != nomes.size()) {
+            throw new RuntimeException("Erro: Um ou mais compositores nao foram encontrados no banco de dados.");
+        }
+
+        return users.stream()
+                .map(User::getEnderecoCarteira)
+                .collect(Collectors.toList());
     }
 
     private void tratarPerfisConformeRoles (User user){

@@ -15,6 +15,7 @@ public class Musica {
 
     private String titulo;
     private String artistaPrincipalId;
+    private String artista;
     private String album;
     private String isrc;
     private Integer duracaoSegundos;

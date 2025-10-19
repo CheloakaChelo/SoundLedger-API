@@ -56,25 +56,25 @@ public class SpotifyService {
                 .map(SpotifyTokenResponse::getAccess_token);
     }
 
-    public Mono<String> searchTrakcAndGetIsrc(String artist, String track){
-        return getAccessToken().flatMap(token ->
-                apiWebClient.get()
-                        .uri(uriBuilder -> uriBuilder
-                                .path("/v1/search")
-                                .queryParam("q", String.format("artist:%s track:%s", artist, track))
-                                .queryParam("type", "track")
-                                .queryParam("Limit", 1)
-                                .build())
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                        .retrieve()
-                        .bodyToMono(SpotifySearchResponse.class)
-                        .map(response -> {
-                            if (response != null && !response.getTracks().getItems().isEmpty()){
-                                return response.getTracks().getItems().get(0).getExternalIds().getIsrc();
-                            }
-                            throw new RuntimeException("ISRC não encontrado para a música.");
-                        })
-        );
+    public String searchTrackAndGetIsrc(String artist, String track) {
+        String token = getAccessToken().block();
+
+        SpotifySearchResponse response = apiWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v1/search")
+                        .queryParam("q", String.format("artist:%s track:%s", artist, track))
+                        .queryParam("type", "track")
+                        .queryParam("limit", 1)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .retrieve()
+                .bodyToMono(SpotifySearchResponse.class)
+                .block();
+
+        if (response != null && !response.getTracks().getItems().isEmpty()) {
+            return response.getTracks().getItems().get(0).getExternalIds().getIsrc();
+        }
+        throw new RuntimeException("ISRC não encontrado no Spotify para a música.");
     }
 
 

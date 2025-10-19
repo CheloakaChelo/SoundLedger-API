@@ -1,11 +1,14 @@
 package br.com.SoundLedger_API.controller;
 
+import br.com.SoundLedger_API.model.dto.CadastroRequestDTO;
 import br.com.SoundLedger_API.model.entity.Musica;
+import br.com.SoundLedger_API.service.MusicaOrquestradorService;
 import br.com.SoundLedger_API.service.MusicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +20,12 @@ public class MusicaController {
     @Autowired
     private final MusicaService service;
 
-    public MusicaController(MusicaService service) {
+    @Autowired
+    private final MusicaOrquestradorService orquestradorService;
+
+    public MusicaController(MusicaService service, MusicaOrquestradorService orquestradorService) {
         this.service = service;
+        this.orquestradorService = orquestradorService;
     }
 
     @GetMapping("/listar")
@@ -52,6 +59,12 @@ public class MusicaController {
         }else {
             return ResponseEntity.ok(musicaPorArtista);
         }
+    }
+
+    @PostMapping("/orquestrador-cadastro")
+    public ResponseEntity<Mono<Musica>> cadastrarMusicaZero (@RequestBody CadastroRequestDTO cadastroRequestDTO) throws Exception {
+        Musica newMusica = orquestradorService.cadastrarNovaMusica(cadastroRequestDTO.artista(), cadastroRequestDTO.titulo());
+        return (ResponseEntity<Mono<Musica>>) ResponseEntity.ok();
     }
 
     @PostMapping("/cadastrar")
