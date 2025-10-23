@@ -2,12 +2,14 @@ package br.com.SoundLedger_API.api.spotify.service;
 
 import br.com.SoundLedger_API.api.spotify.dto.SpotifySearchResponse;
 import br.com.SoundLedger_API.api.spotify.dto.SpotifyTokenResponse;
+import br.com.SoundLedger_API.api.spotify.dto.TrackItem;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 
@@ -75,6 +77,34 @@ public class SpotifyService {
             return response.getTracks().getItems().get(0).getExternalIds().getIsrc();
         }
         throw new RuntimeException("ISRC não encontrado no Spotify para a música.");
+    }
+
+    public TrackItem findSpotifyTrackByIsrc(String isrc) {
+        try {
+            String token = getAccessToken().block();
+
+            SpotifySearchResponse response = apiWebClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/v1/search")
+                            .queryParam("q", "isrc:" + isrc)
+                            .queryParam("type", "track")
+                            .queryParam("limit", 1)
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(SpotifySearchResponse.class)
+                    .block();
+
+            if (response != null && response.getTracks() != null && !response.getTracks().getItems().isEmpty()) {
+                return response.getTracks().getItems().get(0);
+            } else {
+                return null;
+            }
+        } catch(WebClientResponseException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
