@@ -5,7 +5,6 @@ contract SoundLedgerContract {
     address public owner;
     string public musicTitle;
     string public isrc;
-    // ✅ Renomeado para clareza e consistência com a função updatePlayCount
     uint256 public totalPlaysReported;
 
     struct RightsHolder {
@@ -13,16 +12,12 @@ contract SoundLedgerContract {
         uint256 split;
     }
 
-    // ✅ Corrigido erro de digitação (plural)
     RightsHolder[] public rightsHoldersInfo;
 
     mapping(address => uint256) public releasableRoyalties;
 
-    // ✅ Evento PlayRegistered removido (não usamos mais incremento)
-    // event PlayRegistered(uint256 newTotalPlays);
     event RoyaltiesDeposited(address from, uint256 amount);
     event RoyaltiesWithdrawn(address to, uint256 amount);
-    // ✅ Evento para a atualização da contagem total
     event PlayCountUpdated(uint256 newTotalPlays);
 
     modifier onlyOwner() {
@@ -39,7 +34,7 @@ contract SoundLedgerContract {
         owner = msg.sender;
         musicTitle = _musicTitle;
         isrc = _isrc;
-        totalPlaysReported = 0; // ✅ Inicia a contagem com zero
+        totalPlaysReported = 0;
 
         require(_wallets.length == _splits.length, "As listas de carteiras e porcentagens devem ter o mesmo tamanho");
 
@@ -47,7 +42,6 @@ contract SoundLedgerContract {
         for (uint i = 0; i < _wallets.length; i++) {
             require(_splits[i] > 0, "a porcentagem nao pode ser zero");
 
-            // ✅ Corrigido nome da variável
             rightsHoldersInfo.push(RightsHolder({
                 wallet: _wallets[i],
                 split: _splits[i]
@@ -61,9 +55,7 @@ contract SoundLedgerContract {
     receive() external payable {
         require(msg.value > 0, "O valor depositado deve ser maior que zero");
 
-        // ✅ Corrigido nome da variável
         for (uint i = 0; i < rightsHoldersInfo.length; i++) {
-            // ✅ Corrigido nome da variável
             RightsHolder memory holder = rightsHoldersInfo[i];
 
             uint256 amount = (msg.value * holder.split) / 100;
@@ -73,17 +65,12 @@ contract SoundLedgerContract {
         emit RoyaltiesDeposited(msg.sender, msg.value);
     }
 
-    /**
-     * @dev ATUALIZA a contagem total de plays reportados. Apenas o backend (owner) pode chamar.
-     * @param _newPlayCount O novo número total de plays vindo da API externa (Last.fm).
-     */
+
     function updatePlayCount(uint256 _newPlayCount) public onlyOwner {
         // Validação opcional para garantir que a contagem não diminua
         // require(_newPlayCount >= totalPlaysReported, "A nova contagem nao pode ser menor que a atual");
 
-        // ✅ Corrigido nome da variável
         totalPlaysReported = _newPlayCount;
-        // ✅ Emite o evento correto
         emit PlayCountUpdated(_newPlayCount);
     }
 
@@ -101,12 +88,10 @@ contract SoundLedgerContract {
         emit RoyaltiesWithdrawn(beneficiary, amount);
     }
 
-    // ✅ Adicionada função para LER a contagem (boa prática)
     function getTotalPlays() public view returns (uint256) {
         return totalPlaysReported;
     }
 
-    // ✅ Adicionada função para LER os detentores (boa prática)
     function getRightsHoldersInfo() public view returns (RightsHolder[] memory) {
         return rightsHoldersInfo;
     }
