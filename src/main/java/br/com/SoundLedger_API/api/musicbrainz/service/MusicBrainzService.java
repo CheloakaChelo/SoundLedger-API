@@ -70,4 +70,25 @@ public class MusicBrainzService {
                 .distinct()
                 .collect(Collectors.toList());
     }
+
+    public Recording findRecordingByIsrc(String isrc) {
+
+        MusicBrainzSearchResponse response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/ws/2/recording")
+                        // A busca pode ser feita assim ou com query=isrc:
+                        .queryParam("query", "isrc:" + isrc)
+                        .queryParam("inc", "artist-rels+artist-credits") // Pega relações E créditos do artista
+                        .queryParam("fmt", "json")
+                        .build())
+                .retrieve()
+                .bodyToMono(MusicBrainzSearchResponse.class)
+                .block();
+
+        if (response == null || response.getRecordings() == null || response.getRecordings().isEmpty()) {
+            throw new RuntimeException("Nenhuma gravacao encontrada no MusicBrainz para o ISRC: " + isrc);
+        }
+
+        return response.getRecordings().get(0);
+    }
 }
