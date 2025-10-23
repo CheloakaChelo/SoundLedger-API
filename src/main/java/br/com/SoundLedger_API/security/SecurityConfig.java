@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/musica/find/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/musica/listar/{id}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/musica/deletar/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/musica/cadastrar-isrc").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/musica/{isrc}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
