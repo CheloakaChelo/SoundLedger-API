@@ -13,6 +13,9 @@ public class Recording {
     private String id;
     private String title;
 
+    @JsonProperty("artist-credit")
+    private List<Artist> artists;
+
     @JsonProperty("relations")
     private List<Relation> relations;
 
