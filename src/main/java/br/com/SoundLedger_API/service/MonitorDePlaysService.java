@@ -49,10 +49,7 @@ public class MonitorDePlaysService {
             // 2. Itera por cada música monitorada
             for (Musica musica : musicasMonitoradas) {
                 String titulo = musica.getTitulo();
-
                 String artista = musica.getArtista();
-
-
                 String contractAddress = musica.getContratoBlockchain();
 
                 if (contractAddress == null || contractAddress.isEmpty() || titulo == null || artista == null || artista.equals("Artista Desconhecido")) {
