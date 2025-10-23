@@ -1,9 +1,12 @@
 package br.com.SoundLedger_API.controller;
 
 import br.com.SoundLedger_API.model.dto.CadastroRequestDTO;
+import br.com.SoundLedger_API.model.dto.CadastroViaISRCRequestDTO;
+import br.com.SoundLedger_API.model.dto.MusicDetailsDTO;
 import br.com.SoundLedger_API.model.entity.Musica;
 import br.com.SoundLedger_API.service.MusicaOrquestradorService;
 import br.com.SoundLedger_API.service.MusicaService;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -65,6 +69,25 @@ public class MusicaController {
     public ResponseEntity<Mono<Musica>> cadastrarMusicaZero (@RequestBody CadastroRequestDTO cadastroRequestDTO) throws Exception {
         Musica newMusica = orquestradorService.cadastrarNovaMusica(cadastroRequestDTO.artista(), cadastroRequestDTO.titulo());
         return (ResponseEntity<Mono<Musica>>) ResponseEntity.ok();
+    }
+
+    @GetMapping("/{isrc}")
+    public ResponseEntity<MusicDetailsDTO> buscarPorIsrc(@PathVariable String isrc) throws RuntimeException {
+        MusicDetailsDTO musicDetailsDTO = orquestradorService.getMusicDetailsByIsrc(isrc);
+        return ResponseEntity.ok(musicDetailsDTO);
+    }
+
+    @PostMapping("/cadastrar-isrc")
+    public ResponseEntity<?> cadastrarViaIsrc(@RequestBody CadastroViaISRCRequestDTO request) {
+        try {
+            Musica musicaSalva = orquestradorService.cadastrarMusicaComDadosConfirmados(request);
+
+            return ResponseEntity.ok(musicaSalva);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("message", "Erro interno no servidor."));
+        }
     }
 
     @PostMapping("/cadastrar")
