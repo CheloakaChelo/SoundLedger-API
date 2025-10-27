@@ -42,7 +42,7 @@ public class BlockchainService {
 
         System.out.println("Enviando transacao 'updatePlayCount' para o contrato: " + contractAddress + " com valor: " + newPlayCount);
 
-        // ✅ Chama o método Java que corresponde à nova função do Solidity
+
         return contract.updatePlayCount(newPlayCount).send();
     }
 
@@ -54,7 +54,7 @@ public class BlockchainService {
 
         System.out.println("Lendo o total de plays reportados do contrato: " + contractAddress);
 
-        // ✅ Chama o método de leitura correto (gerado a partir da função view getTotalPlays)
+
         BigInteger totalPlays = contract.getTotalPlays().send();
 
         System.out.println("Total de plays lido: " + totalPlays);
