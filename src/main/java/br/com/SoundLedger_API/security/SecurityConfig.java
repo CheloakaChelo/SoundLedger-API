@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/user/cadastrar").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/user/deletar/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/musica/listar").permitAll()

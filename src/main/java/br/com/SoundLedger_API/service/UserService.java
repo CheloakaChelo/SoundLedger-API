@@ -74,7 +74,7 @@ public class UserService {
     }
 
     private void tratarPerfisConformeRoles (User user){
-        Set<Role> roles = user.getRoles();
+        List<Role> roles = user.getRoles();
 
         if (roles.contains(Role.ARTISTA)){
             if (user.getPerfilArtista() == null) {

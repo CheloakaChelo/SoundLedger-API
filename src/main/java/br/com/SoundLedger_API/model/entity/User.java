@@ -37,7 +37,7 @@ public class User implements UserDetails {
 
     private String enderecoCarteira;
 
-    private Set<Role> roles;
+    private List<Role> roles;
 
     private PerfilArtista perfilArtista;
     private PerfilCompositor perfilCompositor;

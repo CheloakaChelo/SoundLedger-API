@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/musica")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MusicaController {
 
     @Autowired

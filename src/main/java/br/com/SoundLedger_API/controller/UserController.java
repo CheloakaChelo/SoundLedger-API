@@ -2,6 +2,7 @@ package br.com.SoundLedger_API.controller;
 
 import br.com.SoundLedger_API.model.entity.User;
 import br.com.SoundLedger_API.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -49,10 +51,11 @@ public class UserController {
         }
     }
 
+    @Transactional
     @PostMapping("/cadastrar")
     public ResponseEntity<User> cadastrarUser(@RequestBody User user) throws Exception{
         User newUser = service.cadastrarUser(user);
-        return ResponseEntity.ok(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping("/editar")
