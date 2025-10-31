@@ -34,6 +34,10 @@ public class MusicaService {
         return (List<Musica>) dao.findAllByArtistaPrincipalId(artistaPrincipalId);
     }
 
+    public List<Musica> listarPorParticipacoes(@PathVariable String idUser){
+        return dao.findByParticipacoesUsuarioId(idUser);
+    }
+
     public Musica cadastrarMusica(@RequestBody Musica musica){
         for (ParticipacaoNaMusica p : musica.getParticipacoes()){
             User user = userDao.findById(p.getUsuarioId()).orElseThrow(() -> new RuntimeException("Usuario não encontrado: " + p.getUsuarioId()));

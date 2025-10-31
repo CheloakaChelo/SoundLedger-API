@@ -17,4 +17,6 @@ public interface IMusica extends MongoRepository<Musica, String> {
     Optional<Musica> findByTituloAndArtista(String titulo, String artista);
 
     List<Musica> findByParticipacoesUsuarioId(String participacoesUsuarioId);
+
+    String id(String id);
 }

@@ -66,6 +66,17 @@ public class MusicaController {
         }
     }
 
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<List<Musica>> musicaPorParticipacoes(@PathVariable String id){
+        List<Musica> musicaList = service.listarPorParticipacoes(id);
+
+        if(musicaList.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(musicaList);
+        }
+    }
+
     @PostMapping("/orquestrador-cadastro")
     public ResponseEntity<Mono<Musica>> cadastrarMusicaZero (@RequestBody CadastroRequestDTO cadastroRequestDTO) throws Exception {
         Musica newMusica = orquestradorService.cadastrarNovaMusica(cadastroRequestDTO.artista(), cadastroRequestDTO.titulo());
