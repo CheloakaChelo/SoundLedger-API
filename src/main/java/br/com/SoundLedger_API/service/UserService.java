@@ -43,8 +43,8 @@ public class UserService {
     public User cadastrarUser(User user) throws Exception {
         user.setSenha(new BCryptPasswordEncoder().encode(user.getSenha()));
 
-        String enderecoCarteira = carteiraService.gerarEnderecoCarteira();
-        user.setEnderecoCarteira(enderecoCarteira);
+        // String enderecoCarteira = carteiraService.gerarEnderecoCarteira();
+        // user.setEnderecoCarteira(enderecoCarteira);
 
         return dao.save(user);
     }
