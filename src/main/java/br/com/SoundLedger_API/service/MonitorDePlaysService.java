@@ -31,7 +31,7 @@ public class MonitorDePlaysService {
     private final IUser userDao;
     private final BlockchainService blockchainService;
 
-    private static final BigDecimal ETH_PER_PLAY = new BigDecimal("0.0001");
+    private static final BigDecimal ETH_PER_PLAY = new BigDecimal("0.000001");
 
     @Autowired
     public MonitorDePlaysService(LastFmService lastFmService,
@@ -44,7 +44,7 @@ public class MonitorDePlaysService {
     }
 
 
-    @Scheduled(fixedRate = 300000) // 5 minutos
+    @Scheduled(fixedRate = 120000) // 2 minutos
     public void verificarPlays() {
         logger.info("-------------------------------------------");
         logger.info("Iniciando ciclo: Atualização/Depósito/Distribuição...");

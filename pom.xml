@@ -140,6 +140,11 @@
 						<include>**/*.sol</include>
 					</includes>
 				</soliditySourceFiles>
+
+				<solcVersion>0.8.20</solcVersion>
+				<optimize>true</optimize>
+				<optimizerRuns>200</optimizerRuns>
+
 			</configuration>
 				<executions>
 					<execution>
